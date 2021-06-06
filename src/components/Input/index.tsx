@@ -2,20 +2,26 @@ import {
   useEffect,
   useRef,
   useState,
-  useCallback,
+  useCallback, ReactNode,
 } from 'react';
 
-import { useField } from '@unform/core';
+import {useField} from '@unform/core';
+import {Container} from './styles';
 
-import { Container } from './styles';
+interface props {
+  name: string;
+  icon?: string;
+  children?: ReactNode;
+  placeholder: string;
+}
 
-const Input = ({ name, icon: Icon, ...rest }) => {
+export default function Input({name, icon: Icon, ...rest}: props) {
   const inputRef = useRef(null);
 
   const [isFocused, setIsFocused] = useState(false);
   const [isFilled, setIsFilled] = useState(false);
 
-  const { fieldName, defaultValue, registerField } = useField(name);
+  const {fieldName, defaultValue, registerField} = useField(name);
 
   const handleInputFocus = useCallback(() => {
     setIsFocused(true);
@@ -24,7 +30,7 @@ const Input = ({ name, icon: Icon, ...rest }) => {
   const handleInputBlur = useCallback(() => {
     setIsFocused(false);
 
-    setIsFilled(!!inputRef.current?.value);
+    setIsFilled(!!inputRef.current);
   }, []);
 
   useEffect(() => {
@@ -37,7 +43,7 @@ const Input = ({ name, icon: Icon, ...rest }) => {
 
   return (
     <Container isFilled={isFilled} isFocused={isFocused}>
-      {Icon && <Icon size={20} />}
+      {/*{Icon && <Icon size={20}/>}*/}
 
       <input
         onFocus={handleInputFocus}
@@ -48,6 +54,4 @@ const Input = ({ name, icon: Icon, ...rest }) => {
       />
     </Container>
   );
-};
-
-export default Input;
+}
